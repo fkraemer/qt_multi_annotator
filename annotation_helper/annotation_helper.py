@@ -215,11 +215,13 @@ class ImageBackbone(QtCore.QObject):
         if self._markerArray is not None:
             cv2.imwrite(markerFilename,self._markerArray)
             self.imageSetList[self._imgID].markerFile = markerFilename
-            print 'saved marker img'
+            print 'saved marker img to %s' % markerFilename
             #TODO emit signal safed successfully
         if self._maskArray is not None:
-            cv2.imwrite(maskFilename, self._maskArray)
-            print 'saved segmentation mask img'
+            maskResized = cv2.resize(self._maskArray, None, fy=1./self._scaleFactorX , fx=1./self._scaleFactorY,
+                                  interpolation=cv2.INTER_NEAREST)
+            cv2.imwrite(maskFilename, maskResized)
+            print 'saved segmentation mask img to %s' % maskFilename
             #TODO emit signal safed successfully
 
     # TODO, at some point do not allow to do too many recalcs
