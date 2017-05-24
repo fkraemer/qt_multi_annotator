@@ -9,4 +9,4 @@ The tool will list all .png files in the given FOLDER. It is save to rename the 
  * Python 2
  * Qt4
  * Matplotlib
- * Opencv2
+ * Opencv2/3

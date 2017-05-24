@@ -15,6 +15,7 @@ MARKER_POSTFIX = '_marker'
 PREFIX_POSTFIX_SPLIT_SIGN = '_'
 
 
+#TODO, hand over which segmentation tool should be used with which parameters when computeWatershed() is called
 class segmentIt():
     def __init__(self, watershedParam):
         self._watershedParam = watershedParam
@@ -52,7 +53,6 @@ def convertQImgToArray(qImg):
     buf = qImg.bits().asstring(qImg.numBytes())
     arr = np.frombuffer(buf, np.uint8).reshape(height,width,4)
     return cv2.cvtColor(arr,cv2.COLOR_BGRA2RGBA)
-
 
 
 class ImageSet():
@@ -181,7 +181,10 @@ class ImageBackbone(QtCore.QObject):
             #read the image
             filename = self.imageSetList[self._imgID].imgFile
             print 'INFO: Now reading %s' % filename
-            self.img = cv2.imread(filename,cv2.CV_LOAD_IMAGE_COLOR)
+            if float(cv2.__version__.split('.')[0]) >= 3:
+                self.img = cv2.imread(filename, cv2.IMREAD_COLOR)
+            else:
+                self.img = cv2.imread(filename,cv2.CV_LOAD_IMAGE_COLOR)
             if self.img is None:
                 self.imageSetList.remove(self.imageSetList[self._imgID])
                 self.maxId -=1
@@ -196,7 +199,11 @@ class ImageBackbone(QtCore.QObject):
             name = self.imageSetList[self._imgID].name
             self.imgLoaded.emit(self.npArrayToQImage(self.img), self._imgID, name, self.minId, self.maxId)
             if self.imageSetList[self._imgID].markerFile:
-                self._markerArray = cv2.imread(self.imageSetList[self._imgID].markerFile, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                if float(cv2.__version__.split('.')[0]) >= 3:
+                    self._markerArray = cv2.imread(self.imageSetList[self._imgID].markerFile,
+                                                   cv2.IMREAD_GRAYSCALE)
+                else:
+                    self._markerArray = cv2.imread(self.imageSetList[self._imgID].markerFile, cv2.CV_LOAD_IMAGE_GRAYSCALE)
                 rgbArray = self.convertIndexArrayToARGBArray(self._markerArray, self._markerAlpha )
                 self.markersLoaded.emit(convertARGBarrayToQImage(rgbArray))
                 self.computeWatershedUpdate()
@@ -228,6 +235,7 @@ class ImageBackbone(QtCore.QObject):
     def computeWatershedUpdate(self):
         sI = segmentIt(1)
         tmpImg = cv2.cvtColor(self.img,cv2.COLOR_RGBA2BGR)
+        #TODO, hand over which segmentation tool should be used with which parameters when computeWatershed() is called
         self._maskArray = sI.watershedSegmentation(tmpImg,self._markerArray)
         rgbArray = self.convertIndexArrayToARGBArray(self._maskArray, self._watershedAlpha)  # TODO, let the scribble widget set the alphas
         self.watershedUpdate.emit(convertARGBarrayToQImage(rgbArray))
