@@ -83,7 +83,7 @@ class AnnotationWindow(QtGui.QWidget):
         QtCore.QObject.connect(self.saveButton, QtCore.SIGNAL('clicked()'), self.slot_save)
         QtCore.QObject.connect(self.saveAndNextButton, QtCore.SIGNAL('clicked()'), self.slot_saveAndNext)
         QtCore.QObject.connect(self.clearMarkerButton, QtCore.SIGNAL('clicked()'), self.slot_clearMarkerImage)
-        QtCore.QObject.connect(self.watershedActiveWidget,QtCore.SIGNAL('stateChanged(int)'),self.slot_watershedActiveChange)
+        QtCore.QObject.connect(self.segmentationActiveWidget, QtCore.SIGNAL('stateChanged(int)'), self.slot_watershedActiveChange)
 
         #Background tasks
         QtCore.QObject.connect(self.imgBackbone, QtCore.SIGNAL('imgLoaded(QImage, int , QString, int, int)'), self.slot_updateImg)
@@ -139,12 +139,12 @@ class AnnotationWindow(QtGui.QWidget):
 
         ###watershed params
         vboxRightWatershedSubLayout = QtGui.QVBoxLayout()
-        self.watershedActiveWidget = QtGui.QCheckBox("Paint Seg")
+        self.segmentationActiveWidget = QtGui.QCheckBox("Paint Segm.")
         # self.watershedOptions = ['Normal','Foo','Bar']
         # self.watershedEdit = QtGui.QComboBox()
         # self.watershedEdit.addItems(self.watershedOptions)
         # vboxRightWatershedSubLayout.addWidget(self.watershedEdit)
-        vboxRightWatershedSubLayout.addWidget(self.watershedActiveWidget)
+        vboxRightWatershedSubLayout.addWidget(self.segmentationActiveWidget)
         watershedOptionsGroup = QtGui.QGroupBox("Segmentation")
         # watershedGroup.setStyleSheet('border: 1px solid black; border-radius: 5px; margin-top: 1ex')
         watershedOptionsGroup.setLayout(vboxRightWatershedSubLayout)
@@ -187,6 +187,8 @@ class AnnotationWindow(QtGui.QWidget):
             self.slot_closeHandle()
         if e.key() == QtCore.Qt.Key_S:
             self.slot_save()
+        if e.key() == QtCore.Qt.Key_T:
+            self.segmentationActiveWidget.toggle()
         print e.key()
 
     def guiActivateClassButton(self):
@@ -259,7 +261,7 @@ class AnnotationWindow(QtGui.QWidget):
     def slot_clearMarkerImage(self):
         self.scribbleArea.clearImage()
         if self.watershedActivated:
-            self.watershedActiveWidget.setChecked(False)
+            self.segmentationActiveWidget.setChecked(False)
             #TODO test, whether this emits the signal and provokes a watershed update
 
     def slot_idNotValid(self,id,minId, maxId):
