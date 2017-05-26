@@ -230,7 +230,7 @@ class AnnotationWindow(QtGui.QWidget):
 
     def saveThisImageAndMask(self):
         self.imgBackbone.markerUpdate(self.scribbleArea.markerImgRGB)
-        self.imgBackbone.computeWatershedUpdate()
+        self.imgBackbone.computeSegmentation()
         self.imgBackbone.save()
 
     def slot_openImage(self,id):
@@ -272,7 +272,7 @@ class AnnotationWindow(QtGui.QWidget):
         #TODO do some timer stuff here, to not do it too often
         if self.watershedActivated:
             self.imgBackbone.markerUpdate(self.scribbleArea.markerImgRGB)
-            self.imgBackbone.computeWatershedUpdate()
+            self.imgBackbone.computeSegmentation()
 
     def slot_watershedActiveChange(self,i):
         if i > 0:
@@ -317,10 +317,12 @@ if __name__ == "__main__":
     # nameList = ['Boden', 'Wasser', 'Bodenholz', 'Tanne', 'Fichte', 'Kiefer', 'Blattlos', 'DontCare']
     classMax = np.min((len(nameList),MAX_CLASSES)) #limit this
     nameList = nameList[0:classMax]
+    segmTools =
     imgBackbone = ImageBackbone(args.path,MAX_CLASSES,IMG_SIZE_Y,IMG_SIZE_X,#let the backbone always work up to MAX_CLASSES so that wrong user input can not destroy once set labels
                                 DEFAULT_BACKGROUND_ALPHA, DEFAULT_MARKER_ALPHA, DEFAULT_WATERSHED_ALPHA,
                                 MARKER_NEUTRAL_COLOR,MARKER_NEUTRAL_CLASS)
-    myapp = AnnotationWindow(imgBackbone,nameList)
+
+    myapp = AnnotationWindow(imgBackbone,nameList, segmList)
     myapp.show()
     sys.exit(app.exec_())
 
