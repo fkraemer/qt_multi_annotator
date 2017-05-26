@@ -194,7 +194,7 @@ class ImageBackbone(QtCore.QObject):
             #note, cv2 convention is x is horizontal axis, y is vertical, but for matrices its X x Y x M
             self.img = cv2.resize(self.img, None, fy=self._scaleFactorX , fx=self._scaleFactorY,
                                   interpolation=cv2.INTER_AREA)
-            self.img = cv2.cvtColor(self.img, cv2.COLOR_BGR2RGBA)
+            self.img = cv2.cvtColor(self.img, cv2.COLOR_BGR2BGRA)
             self.img[:,:,3] = self._backgroundAlpha  # TODO, let the scribble widget set the alphas
             name = self.imageSetList[self._imgID].name
             self.imgLoaded.emit(self.npArrayToQImage(self.img), self._imgID, name, self.minId, self.maxId)

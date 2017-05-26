@@ -310,6 +310,9 @@ def loadClassNamesOrSetNew(path, rawNames):
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     args = parser.parse_args()
+    if not os.path.exists(args.path):
+        print 'Path %s does not exist. Exiting now' %args.path
+        sys.exit(-1)
     nameList = loadClassNamesOrSetNew(args.path,args.classes)
     # nameList = ['Boden', 'Wasser', 'Bodenholz', 'Tanne', 'Fichte', 'Kiefer', 'Blattlos', 'DontCare']
     classMax = np.min((len(nameList),MAX_CLASSES)) #limit this
