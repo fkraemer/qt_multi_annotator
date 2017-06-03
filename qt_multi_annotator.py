@@ -189,7 +189,7 @@ class AnnotationWindow(QtGui.QWidget):
             self.slot_save()
         if e.key() == QtCore.Qt.Key_T:
             self.segmentationActiveWidget.toggle()
-        print e.key()
+      #Debug  print e.key()
 
     def guiActivateClassButton(self):
         deactivatedButtonList = range(0,len(self.classButtonList))
