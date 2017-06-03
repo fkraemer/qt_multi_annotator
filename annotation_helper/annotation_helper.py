@@ -13,6 +13,7 @@ COLORMAP_MAX = 200
 MASK_POSTFIX = '_mask'
 MARKER_POSTFIX = '_marker'
 PREFIX_POSTFIX_SPLIT_SIGN = '_'
+BORDER_CLASS = 255
 
 
 #TODO, hand over which segmentation tool should be used with which parameters when computeWatershed() is called
@@ -20,14 +21,24 @@ class segmentIt():
     def __init__(self, watershedParam):
         self._watershedParam = watershedParam
 
+
+    def clearWatershedBorders(self, watershedImg):
+        result = np.zeros(watershedImg.shape,np.uint8)
+        extendKernel = np.asarray([[0,1,0],[1,1,1],[0,1,0]],np.uint8)
+        for i in np.unique(watershedImg):
+            if i != BORDER_CLASS:
+                areaExtended = cv2.dilate((watershedImg==i).astype(np.uint8),extendKernel)
+                result[areaExtended != 0] = i
+        return result
+
     def watershedSegmentation(self,img, markers):
         m = (markers+1).copy().astype(dtype=np.int32) # watershed takes class 0 as background
         cv2.watershed(img,m) #0 is considered uncertain
         m = m - 1  #bring labels back to normal
-        m[m<0]=255
+        m[m<0]=BORDER_CLASS
         m=m.astype(np.uint8)
-        print 'Border pixels: %d' %  np.argwhere(m == 255).shape[0]
-        return m
+        return self.clearWatershedBorders(m)
+
 
 
         #img[markers == -1] = [255, 0, 0] # to get the boundaries
