@@ -22,10 +22,12 @@ The view size is currently fixed to 800x1024px2, images can be of different size
 * Parameters are already extracted for custom image sizes, but should be fit dynamically determinable by the user.
 
 # Demo
-The below images give an impression about the workflow. First the markers are postiioned/scribbled/drawn, then the segmentation craetes a label mask.
+The below images give an impression about the workflow. First the markers are postioned/scribbled/drawn, then the regions are extended to a pixel-wise label mask.
 
+Marker example:
 ![marker_img]
 
+Label example:
 ![label_img]
 
 
