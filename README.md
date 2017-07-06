@@ -24,6 +24,11 @@ The view size is currently fixed to 800x1024px2, images can be of different size
 # Demo
 The below images give an impression about the workflow. First the markers are postiioned/scribbled/drawn, then the segmentation craetes a label mask.
 
-![alt text]( fkraemer/qt_multi_annotator/blob/demo/img/qt_multi_marker.png )
+![marker_img]
 
-![alt text]( fkraemer/qt_multi_annotator/blob/demo/img/qt_multi_mask.png )
+![label_img]
+
+
+
+[marker_img]: https://github.com/fkraemer/qt_multi_annotator/blob/demo/img/qt_multi_marker.png "Marker GUI Demo"
+[label_img]:  https://github.com/fkraemer/qt_multi_annotator/blob/demo/img/qt_multi_mask.png "Label GUI Demo"
