@@ -20,3 +20,10 @@ The view size is currently fixed to 800x1024px2, images can be of different size
 
 * This is somewhat stable but still WIP.
 * Parameters are already extracted for custom image sizes, but should be fit dynamically determinable by the user.
+
+# Demo
+The below images give an impression about the workflow. First the markers are postiioned/scribbled/drawn, then the segmentation craetes a label mask.
+
+![alt text]( fkraemer/qt_multi_annotator/blob/demo/img/qt_multi_marker.png )
+
+![alt text]( fkraemer/qt_multi_annotator/blob/demo/img/qt_multi_mask.png )
