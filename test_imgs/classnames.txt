@@ -1,8 +1,0 @@
-(lp0
-S'boo'
-p1
-aS'gammo'
-p2
-aS'rara'
-p3
-a.
